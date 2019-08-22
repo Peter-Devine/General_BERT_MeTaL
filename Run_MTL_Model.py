@@ -27,7 +27,7 @@ parser=argparse.ArgumentParser()
 parser.add_argument('--max_seq_length', default="150", help='Max size of the input')
 parser.add_argument('--batch_size', default="32", help='Batch size of training')
 parser.add_argument('--data_paths', help='List of all the root file paths of all the datasets (comma separated, e.g. /home/documents/dataset1.tsv,/home/documents/dataset2.tsv)')
-parser.add_argument('--input_and_label_columns', help='Pipe separated list of comma separated lists of column names which correspond to the text_A, text_B and label columns are for each dataset (same order as before). If no text_B is available for a task, just leave that column blank, but include all commas. E.g. question_col,context_col,answer_col|text,,class')
+parser.add_argument('--input_and_label_columns', help='Arrow (>) separated list of comma separated lists of column names which correspond to the text_A, text_B and label columns are for each dataset (same order as before). If no text_B is available for a task, just leave that column blank, but include all commas. E.g. question_col,context_col,answer_col>text,,class')
 parser.add_argument('--num_finetune_epochs', default="1", help='How many epochs to run fine-tuning for')
 
 args = parser.parse_args()
@@ -35,7 +35,7 @@ MAX_SEQ_LENGTH = int(args.max_seq_length)
 BATCH_SIZE = int(args.batch_size)
 DATA_PATHS = args.data_paths.split(",")
 
-DATA_COLUMNS = [{"text_A": column_list.split(",")[0], "text_B": column_list.split(",")[1], "label": column_list.split(",")[2]} for column_list in args.input_and_label_columns.split("|")]
+DATA_COLUMNS = [{"text_A": column_list.split(",")[0], "text_B": column_list.split(",")[1], "label": column_list.split(",")[2]} for column_list in args.input_and_label_columns.split(">")]
 NUM_EPOCHS = int(args.num_finetune_epochs)
 
 assert (len(DATA_PATHS) == len(DATA_COLUMNS)), "Number of datasets different to supplied sets of columns for each dataset"

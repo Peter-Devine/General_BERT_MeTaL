@@ -20,8 +20,8 @@ from pytorch_transformers.modeling_bert import BertModel
 from pytorch_transformers.modeling_bert import BertConfig
 
 # Import custom utils
-import Task_creator
-import LM_MTL_Data_Handler
+import utils.Task_creator
+import utils.LM_MTL_Data_Handler
 
 parser=argparse.ArgumentParser()
 parser.add_argument('--max_seq_length', default="150", help='Max size of the input')

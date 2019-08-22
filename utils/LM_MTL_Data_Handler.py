@@ -1,5 +1,4 @@
 from pytorch_transformers.tokenization_bert import BertTokenizer
-from keras.preprocessing.sequence import pad_sequences
 from csv import reader as csv_reader
 from os.path import join as join_path 
 

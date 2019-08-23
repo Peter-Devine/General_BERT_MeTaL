@@ -10,13 +10,13 @@ An example of this can be seen in `./data/example_task`.
 6. Run the following command to train an MTL model on these tasks:
 
 ```
-python Run_MTL_Model.py --max_seq_length=50 --batch_size=32 --num_finetune_epochs=20
+python Run_MTL_Model.py --max_seq_length=50 --batch_size=32 --num_mtl_train_epochs=20
 ```  
 
 Where:
 * `max_seq_length` is the max sequence length of the BERT model. This is the upper limit of the amount of tokens that you can pass into BERT. Default is 150, but smaller is faster and more memory efficient.
 * `batch_size` is the batch size of the datasets when they are trained. Larger is faster, but is more memory intensive, meaning that a balance should be struck depending on your computational resources. Default is 32.
-* `num_finetune_epochs` is the number of epochs in which the model is trained. Default is 1.
+* `num_mtl_train_epochs` is the number of epochs in which the model is trained. Default is 20.
 
 Training results will then be printed.
 

@@ -27,12 +27,12 @@ import utils.LM_MTL_Data_Handler as LM_MTL_Data_Handler
 parser=argparse.ArgumentParser()
 parser.add_argument('--max_seq_length', default="150", help='Max size of the input')
 parser.add_argument('--batch_size', default="32", help='Batch size of training')
-parser.add_argument('--num_finetune_epochs', default="1", help='How many epochs to run fine-tuning for')
+parser.add_argument('--num_mtl_train_epochs', default="20", help='How many epochs to run fine-tuning for')
 
 args = parser.parse_args()
 MAX_SEQ_LENGTH = int(args.max_seq_length)
 BATCH_SIZE = int(args.batch_size)
-NUM_EPOCHS = int(args.num_finetune_epochs)
+NUM_EPOCHS = int(args.num_mtl_train_epochs)
 
 # Create special module that can be passed into the MTL model which splits up the data so that it can be used in BERT
 # I.e., this module splits up the inputted data into tokens, token type ids and attention masks

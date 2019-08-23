@@ -8,12 +8,15 @@ If you only a one string classification problem (E.g. sentiment analysis), then 
 5. These files should then be put into a folder named after the task, and this folder should be placed in the `./data` subdirectory of this project.
 An example of this can be seen in `./data/example_task`.
 6. Run the following command to train an MTL model on these tasks:
+
 ```
 python Run_MTL_Model.py --max_seq_length=50 --batch_size=32 --num_finetune_epochs=20
-```
-Where the `max_seq_length` is the max sequence length of the BERT model. This is the upper limit of the amount of tokens that you can pass into BERT. Default is 150, but smaller is faster and more memory efficient.  
-`batch_size` is the batch size of the datasets when they are trained. Larger is faster, but is more memory intensive, meaning that a balance should be struck depending on your computational resources. Default is 32.  
-`num_finetune_epochs` is the number of epochs in which the model is trained. Default is 1.
+```  
+
+Where:
+* `max_seq_length` is the max sequence length of the BERT model. This is the upper limit of the amount of tokens that you can pass into BERT. Default is 150, but smaller is faster and more memory efficient.
+* `batch_size` is the batch size of the datasets when they are trained. Larger is faster, but is more memory intensive, meaning that a balance should be struck depending on your computational resources. Default is 32.
+* `num_finetune_epochs` is the number of epochs in which the model is trained. Default is 1.
 
 Training results will then be printed.
 

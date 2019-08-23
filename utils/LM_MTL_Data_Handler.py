@@ -1,14 +1,14 @@
 from pytorch_transformers.tokenization_bert import BertTokenizer
 from csv import reader as csv_reader
-from os.path import join as join_path 
+from os.path import join as join_path
 
-def make_list_dict_from_tsv(dataset_dict):
+def make_list_dict_from_tsv(dataset_name, cwd):
     """Reads a tab separated value file."""
     
     split_datasets = {}
     
     for split in ["train", "dev", "test"]:
-        with open(join_path(dataset_dict["data_path"], split+".tsv"), "r", encoding="utf-8") as f:
+        with open(join_path(cwd, "data", dataset_name, split+".tsv"), "r", encoding="utf-8") as f:
             reader = csv_reader(f, delimiter="\t")
             lines = []
             is_start = True
@@ -19,15 +19,15 @@ def make_list_dict_from_tsv(dataset_dict):
                     is_start = False
                     headers = line
                     
-                    text_A_id = headers.index(dataset_dict["data_columns"]["text_A"])
+                    text_A_id = headers.index("text_A")
                     
                     # If text_B column has not been supplied, then assign no text_B ID
-                    if dataset_dict["data_columns"]["text_B"]:
-                        text_B_id = headers.index(dataset_dict["data_columns"]["text_B"])
+                    if "text_B" in headers:
+                        text_B_id = headers.index("text_B")
                     else:
                         text_B_id = None
                         
-                    label_id = headers.index(dataset_dict["data_columns"]["label"])
+                    label_id = headers.index("label")
                 else:
                     text_A = line[text_A_id]
                     
@@ -98,8 +98,10 @@ def format_observation_for_bert_classifier(examples, seq_len):
         segment_ids = post_trunc_seq(segment_ids, seq_len)
         attention_mask = post_trunc_seq(attention_mask, seq_len)
         
+        assert len(text_ids) == seq_len, "Token sequence is not equal to given sequence length"
+        assert all([len(text_ids) == len(segment_ids), len(text_ids) == len(attention_mask)]), "Token creation error - variable lengths of input sequences"
+        
         input_list.append([text_ids, segment_ids, attention_mask])
-        #input_list.append({"text_ids": text_ids, "segment_ids": segment_ids, "attention_mask": attention_mask})
     
     return input_list
 
@@ -127,4 +129,4 @@ def post_trunc_seq(seq, seq_length, padding=0):
     if len(seq) <= seq_length:
         return seq + [padding]*(seq_length-len(seq))
     else:
-        return seq[0:(seq_length-1)]
+        return seq[0:seq_length]

@@ -24,4 +24,4 @@ Training results will then be printed.
     * Seq to seq tasks
     * Seq tagging tasks
 * Support complex model configuration
-    * E.g. Instead of simply having a shared BERT input and individual heads, make it so that the BERT output could be combined with other inputs before reaching heads, or any other level of abstraction.
+    * E.g. Instead of simply having a shared BERT input and individual heads, make it so that the BERT output could be combined with other inputs before reaching heads, or any other arbitrary level of complexity.

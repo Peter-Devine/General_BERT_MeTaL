@@ -86,6 +86,8 @@ cwd = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 # Create list of names in which dataset names will be put as they are created
 dataset_name_list = [f for f in os.listdir(os.path.join(cwd, 'data')) if not os.path.isfile(f)]
 
+tasks = []
+
 for dataset_name in dataset_name_list:
 
     # Get dataset data from dataset_dict, and split it into inputs and outputs
@@ -111,8 +113,7 @@ for dataset_name in dataset_name_list:
 
     # Make a list containing train, dev, test data of each task. Also included is task name, batch size and number of classes
     # that the task is predicting over.
-    tasks = [
-        Task_creator.Task(
+    tasks.append(Task_creator.Task(
             task_name = task_name,
             no_of_lables = number_of_classes,
             batch_size = BATCH_SIZE,
@@ -122,20 +123,19 @@ for dataset_name in dataset_name_list:
             train_outputs = train_outputs,
             dev_outputs = dev_outputs,
             test_outputs = test_outputs
-        )
-    ]
+        ))
 
-
-    classification_task_list = []
     # Make model constitution of each task. Every task has the same shared BERT input module, and its own head module, with
     # output nodes equal to the number of classes in the task.
-    for task in tasks:
-        classification_task = ClassificationTask(
-            name= task.task_name,
-            input_module= bert_layer,
-            head_module= torch.nn.Linear(768, task.no_of_lables)
-        )
-        classification_task_list.append(classification_task)
+classification_task_list = []
+
+for task in tasks:
+    classification_task = ClassificationTask(
+        name= task.task_name,
+        input_module= bert_layer,
+        head_module= torch.nn.Linear(768, task.no_of_lables)
+    )
+    classification_task_list.append(classification_task)
 
 
 

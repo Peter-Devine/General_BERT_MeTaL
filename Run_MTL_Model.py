@@ -27,7 +27,7 @@ import utils.LM_MTL_Data_Handler as LM_MTL_Data_Handler
 parser=argparse.ArgumentParser()
 parser.add_argument('--max_seq_length', default="150", help='Max size of the input')
 parser.add_argument('--batch_size', default="32", help='Batch size of training')
-parser.add_argument('--num_mtl_train_epochs', default="1", help='How many epochs to run fine-tuning for')
+parser.add_argument('--num_mtl_train_epochs', default="20", help='How many epochs to run fine-tuning for')
 
 args = parser.parse_args()
 MAX_SEQ_LENGTH = int(args.max_seq_length)

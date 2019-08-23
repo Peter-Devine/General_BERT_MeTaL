@@ -193,3 +193,5 @@ trainer = MultitaskTrainer(seed=101)
 
 # Run the model to train
 training_metrics = trainer.train_model(model, payloads, n_epochs=NUM_EPOCHS)
+
+print(training_metrics)

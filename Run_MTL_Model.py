@@ -191,7 +191,42 @@ payloads = create_payloads(tasks)
 # Set up the trainer for the payloads and tasks
 trainer = MultitaskTrainer(seed=101)
 
+# Create average accuracy metric for MeTaL to select models on.
+# The model with the highest average validation score is loaded from a checkpoint at the end of training.
+def accuracy(metrics_hist):
+    metrics_agg = {}
+    dev_accuracies = []
+    for key in sorted(metrics_hist.keys()):
+        if "accuracy" in key and "dev" in key:
+            dev_accuracies.append(metrics_hist[key])
+
+    average_accuracy = sum(dev_accuracies)/len(dev_accuracies)
+
+    metrics_agg["model/dev/all/accuracy"] = average_accuracy
+
+    return metrics_agg
+
 # Run the model to train
-training_metrics = trainer.train_model(model, payloads, n_epochs=NUM_EPOCHS)
+training_metrics = trainer.train_model(
+                                    model, 
+                                    payloads, 
+                                    n_epochs=NUM_EPOCHS,
+                                    optimizer_config={
+                                        "optimizer": "sgd",
+                                        "optimizer_common": {"lr": 0.005},
+                                        "sgd_config": {"momentum": 0.01},
+                                    },
+                                    log_every=1,
+                                    checkpoint_config={
+                                        "checkpoint_metric": "model/dev/all/accuracy",
+                                        "checkpoint_metric_mode": "max",
+                                        "checkpoint_dir": os.path.join(cwd, "checkpoints")
+                                    },
+                                    progress_bar=False,                              
+                                    metrics_config={
+                                        "aggregate_metric_fns": [accuracy]
+                                    },
+                                    verbose=True
+)
 
 print(training_metrics)
